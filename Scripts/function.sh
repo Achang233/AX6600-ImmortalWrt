@@ -60,7 +60,6 @@ CONFIG_PACKAGE_kmod-usb-net-cdc-ether=y
 CONFIG_PACKAGE_kmod-usb-net-cdc-mbim=y
 CONFIG_PACKAGE_kmod-usb-net-cdc-ncm=y
 CONFIG_PACKAGE_kmod-usb-net-cdc-subset=y
-CONFIG_PACKAGE_kmod-usb-net-huawei-cdc-ncm=y
 CONFIG_PACKAGE_kmod-usb-net-ipheth=y
 CONFIG_PACKAGE_kmod-usb-net-rndis=y
 CONFIG_PACKAGE_kmod-usb-net-rtl8150=y
@@ -100,17 +99,6 @@ EOF
 function kernel_version() {
   echo $(sed -n 's/^KERNEL_PATCHVER:=\(.*\)/\1/p' target/linux/qualcommax/Makefile)
 }
-function remove_wifi() {
-  local target=$1
-  #去除依赖
-  sed -i 's/\(ath11k-firmware-[^ ]*\|ipq-wifi-[^ ]*\|kmod-ath11k-[^ ]*\)//g' ./target/linux/qualcommax/Makefile
-  sed -i 's/\(ath11k-firmware-[^ ]*\|ipq-wifi-[^ ]*\|kmod-ath11k-[^ ]*\)//g' ./target/linux/qualcommax/${target}/target.mk
-  sed -i 's/\(ath11k-firmware-[^ ]*\|ipq-wifi-[^ ]*\|kmod-ath11k-[^ ]*\)//g' ./target/linux/qualcommax/image/${target}.mk
-  sed -i 's/\(ath10k-firmware-[^ ]*\|kmod-ath10k [^ ]*\|kmod-ath10k-[^ ]*\)//g' ./target/linux/qualcommax/image/${target}.mk
-  #删除无线组件
-  rm -rf package/network/services/hostapd
-  rm -rf package/firmware/ipq-wifi
-}
 
 function set_kernel_size() {
   #修改jdc ax1800 pro 的内核大小为12M
@@ -133,11 +121,6 @@ function generate_config() {
   #如配置文件已存在
   cat $GITHUB_WORKSPACE/Config/${WRT_TARGET}.txt $GITHUB_WORKSPACE/Config/GENERAL.txt  > $config_file
   local target=$(echo $WRT_ARCH | cut -d'_' -f2)
-
-  #删除wifi依赖
-  if [[ "$WRT_TARGET" == *"NOWIFI"* ]]; then
-    remove_wifi $target
-  fi
 
   set_nss_driver $config_file
   cat_usb_net $config_file

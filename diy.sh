@@ -15,7 +15,7 @@ if [ -n "$1" ]; then
     export WRT_TARGET="${filename%.*}"
 else
     # 如果没有传递参数，设置默认值
-    export WRT_TARGET="IPQ60XX-6.12-NOWIFI"
+    export WRT_TARGET="IPQ60XX-6.12-WIFI"
 fi
 
 if [ -n "$2" ]; then
@@ -27,8 +27,8 @@ export GITHUB_WORKSPACE=$(pwd)
 export WRT_DATE=$(TZ=UTC-8 date +"%y.%m.%d_%H.%M.%S")
 export WRT_VER=$(echo $WRT_REPO | cut -d '/' -f 5-)-$WRT_BRANCH
 export WRT_TYPE=$(sed -n "1{s/^#//;s/\r$//;p;q}" $GITHUB_WORKSPACE/Config/$WRT_TARGET.txt)
-export WRT_NAME='OWRT'
-export WRT_SSID='OWRT'
+export WRT_NAME='RuiWrt'
+export WRT_SSID='RuiWrt'
 export WRT_WORD='12345678'
 export WRT_THEME='argon'
 export WRT_IP='192.168.10.1'
