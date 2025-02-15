@@ -70,7 +70,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Free Disk Space
-        uses: FirelightFlagboy/gh-runner-free-disk-space@main
+        uses: thiagokokada/free-disk-space@main
         with:
           android: true
           dotnet: true
