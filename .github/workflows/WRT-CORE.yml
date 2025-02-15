@@ -68,16 +68,11 @@ jobs:
     name: ${{inputs.WRT_SOURCE}}
     runs-on: ubuntu-22.04
     steps:
-      - name: Free Disk Space
-        uses: FirelightFlagboy/gh-runner-free-disk-space@main
+      - name: Free disk space
+        uses: sbwml/actions@free-disk
         with:
-          android: true
-          dotnet: true
-          haskell: true
-          docker-images: true
-          large-packages: true
-          swap-storage: true
-          tool-cache: true
+          root-reserve-gb: 4
+          swap-size-gb: 4
 
       - name: Checkout Projects
         uses: actions/checkout@main
